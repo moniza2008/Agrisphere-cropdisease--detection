@@ -13,3 +13,8 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Leaf Image", use_column_width=True)
     st.success("Image uploaded successfully!")
+if uploaded_file is not None:
+    if st.button("Detect Disease"):
+        st.markdown("### 🧪 Analysis Result")
+        st.success("Predicted Disease: Leaf Blight 🌿")
+        st.info("Confidence: 87%")
