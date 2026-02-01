@@ -7,48 +7,53 @@ st.set_page_config(page_title="AgriSphere – Crop Disease Detection", layout="c
 st.title("AgriSphere – Crop Disease Detection 🌱")
 st.write("Machine prototype is running successfully")
 
-# --------------------------
-# Step 1: Upload Leaf Image
-# --------------------------
-uploaded_file = st.file_uploader(
-    "Upload your leaf image here (JPG/PNG)",
-    type=["jpg", "jpeg", "png"]
-)
 
-if uploaded_file is not None:
-    # Display uploaded image
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Leaf", use_column_width=True)
 
-    # Step 2: Placeholder for prediction
-    disease = "Leaf Blight"  # placeholder
-    confidence = 92           # placeholder
-
-    st.success(f"Disease Detected: {disease} ({confidence}%)")
-
-    # Recommended remedy
-    st.subheader("Recommended Remedy")
-    st.write("""
-    • Spray Mancozeb (2g/L) or Chlorothalonil (2ml/L)  
-    • Use neem oil spray weekly  
-    • Remove affected leaves to prevent spreading
-    """)
-else:
-    st.info("👆 Please upload a leaf image to start detection")
+# Sidebar menu
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Crop Disease", "Market Prices"])
 
 # --------------------------
-# Step 3: Market Prices Table
+# Page 1: Crop Disease Detection
 # --------------------------
-st.header("Current Crop Market Prices")
+if page == "Crop Disease":
+    st.title("Crop Disease Detection 🌱")
 
-# Example data - you can update manually or connect API later
-data = {
-    "Crop": ["Tomato", "Rice", "Wheat", "Chilli"],
-    "Price (Rs/kg)": [30, 50, 40, 120],
-    "Market": ["Chennai", "Tuticorin", "Coimbatore", "Madurai"]
-}
+    uploaded_file = st.file_uploader(
+        "Upload your leaf image here (JPG/PNG)",
+        type=["jpg", "jpeg", "png"]
+    )
 
-df = pd.DataFrame(data)
-st.table(df)
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Uploaded Leaf", use_column_width=True)
 
-st.write("⚠ Note: Market prices are indicative. For accurate rates, consult local mandis.")
+        # Placeholder prediction
+        disease = "Leaf Blight"
+        confidence = 92
+        st.success(f"Disease Detected: {disease} ({confidence}%)")
+
+        st.subheader("Recommended Remedy")
+        st.write("""
+        • Spray Mancozeb (2g/L) or Chlorothalonil (2ml/L)  
+        • Use neem oil spray weekly  
+        • Remove affected leaves to prevent spreading
+        """)
+    else:
+        st.info("👆 Please upload a leaf image to start detection")
+
+# --------------------------
+# Page 2: Market Prices
+# --------------------------
+elif page == "Market Prices":
+    st.title("Current Crop Market Prices")
+
+    data = {
+        "Crop": ["Tomato", "Rice", "Wheat", "Chilli"],
+        "Price (Rs/kg)": [30, 50, 40, 120],
+        "Market": ["Chennai", "Tuticorin", "Coimbatore", "Madurai"]
+    }
+
+    df = pd.DataFrame(data)
+    st.table(df)
+    st.write("⚠ Note: Market prices are indicative. For accurate rates, consult local mandis.")
