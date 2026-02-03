@@ -33,13 +33,15 @@ with tab1:
         # Placeholder prediction
         disease = "Leaf Blight"  # Replace with ML model later
         confidence = 92
+
         st.success(f"Disease Detected: {disease} ({confidence}%)")
 
         st.subheader("Recommended Remedy")
         st.write("""
         • Spray Mancozeb (2g/L) or Chlorothalonil (2ml/L)  
         • Use neem oil spray weekly  
-        • Remove affected leaves to prevent spreading
+        • Remove affected leaves to prevent spreading  
+        • Avoid excess watering
         """)
     else:
         st.info("👆 Please upload a leaf image to start detection")
@@ -48,35 +50,58 @@ with tab1:
 # Tab 2: AI Farming Assistant (optional)
 # -----------------------
 with tab2:
-    st.header("Ask an AI Farming Assistant")
-    st.write("This section is optional. Requires OpenAI API key and internet.")
+    st.header("Ask an AI Farming Assistant 🤖")
+    st.write("This section is optional and can be enabled using AI APIs.")
 
-    #user_question = st.text_input("Type your question here:")
-    #if user_question:
-    #    openai.api_key = "YOUR_OPENAI_API_KEY"
-    #    response = openai.ChatCompletion.create(
-    #        model="gpt-3.5-turbo",
-    #        messages=[
-    #            {"role": "system", "content": "You are an expert agricultural assistant."},
-    #            {"role": "user", "content": user_question}
-    #        ],
-    #        max_tokens=150
-    #    )
-    #    answer = response.choices[0].message.content.strip()
-    #    st.write(answer)
+    st.info("AI assistant feature will be added in future versions.")
 
 # -----------------------
-# Tab 3: Market Prices
+# Tab 3: Location-based Market Prices
 # -----------------------
 with tab3:
-    st.header("Current Crop Market Prices")
-    
-    data = {
-        "Crop": ["Tomato", "Rice", "Wheat", "Chilli"],
-        "Price (Rs/kg)": [30, 50, 40, 120],
-        "Market": ["Chennai", "Tuticorin", "Coimbatore", "Madurai"]
+    st.header("📊 Crop Market Prices (Location Based)")
+
+    # Sample market data (Prototype)
+    market_data = {
+        "Thoothukudi": {
+            "Rice": "₹38/kg",
+            "Tomato": "₹22/kg",
+            "Onion": "₹30/kg",
+            "Chilli": "₹110/kg"
+        },
+        "Madurai": {
+            "Rice": "₹40/kg",
+            "Tomato": "₹18/kg",
+            "Onion": "₹28/kg",
+            "Chilli": "₹120/kg"
+        },
+        "Coimbatore": {
+            "Rice": "₹42/kg",
+            "Tomato": "₹25/kg",
+            "Onion": "₹32/kg",
+            "Chilli": "₹115/kg"
+        },
+        "Chennai": {
+            "Rice": "₹45/kg",
+            "Tomato": "₹28/kg",
+            "Onion": "₹35/kg",
+            "Chilli": "₹130/kg"
+        }
     }
 
-    df = pd.DataFrame(data)
-    st.table(df)
-    st.write("⚠ Note: Market prices are indicative. For accurate rates, consult local mandis.")
+    # User selections
+    location = st.selectbox(
+        "📍 Select Market Location",
+        list(market_data.keys())
+    )
+
+    crop = st.selectbox(
+        "🌾 Select Crop",
+        list(market_data[location].keys())
+    )
+
+    price = market_data[location][crop]
+
+    st.success(f"💰 {crop} price in {location}: {price}")
+
+    st.caption("⚠ Prices shown are indicative. Actual prices may vary based on market conditions.")
